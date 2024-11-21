@@ -1,3 +1,4 @@
+import sys
 import pygame
 import time
 import random 
@@ -87,29 +88,32 @@ class GameLoop:
         self.refresh(screen)
 
         last_move_time = time.time()
-
-        while True:
+        running = True
+        while running:
+            pygame.event.pump()
             pygame.display.flip()
             self.refresh(screen)
             current_time = time.time()
             # move cars every move_interval seconds
+            print('testing')
             if current_time - last_move_time >= MOVE_INTERVAL:
                 self.traffic_simulation.update_car_positions()
                 last_move_time = current_time
             
             if self.traffic_simulation.done():
                 result = self.traffic_simulation.result()
-                pygame.display.flip()
-                break
+                running = False
+                pygame.quit()
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    break
-            
+
         print(f"average time to destination: {result} seconds")
-        pygame.quit()
+
+
 
 if __name__ == "__main__":
     gl = GameLoop()
     gl.start()
+    print("IN HERE")
+
+    
     

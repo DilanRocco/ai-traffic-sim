@@ -52,7 +52,9 @@ class StopSign(Intersection):
             self.queue.append(car_index)
             move_after = max(0, stop_sign_delay - (time.time()- self.time_since_last_pass))
             print(move_after)
-            threading.Timer(move_after, self.move_car_thread, kwargs={'car_index': car_index, 'direction': direction, 'ts': ts}).start()
+            timer = threading.Timer(move_after, self.move_car_thread, kwargs={'car_index': car_index, 'direction': direction, 'ts': ts})
+            timer.daemon = True
+            timer.start()
 
     def move_car_thread(self, car_index, direction, ts):
         self.queue.remove(car_index)

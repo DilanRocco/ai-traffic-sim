@@ -78,7 +78,9 @@ class TrafficSimulation:
             for j in range(len(self.matrix[0])):
                 if type(self.matrix[i][j]) == StopLight:
                     self.matrix[i][j].flip_light(self)
-        threading.Timer(self.stop_light_duration, self.setup_thread_for_light_toggle).start()
+        timer = threading.Timer(self.stop_light_duration, self.setup_thread_for_light_toggle)
+        timer.daemon = True
+        timer.start()
 
     def result(self):
         filtered_times = [time for time in self.times if time != math.inf]
