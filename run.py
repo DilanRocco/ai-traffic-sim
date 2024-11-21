@@ -1,4 +1,5 @@
 from traffic_simulation import TrafficSimulation
+import time
 from constants import *
 
 # AI function will go in this file where we will simulate the game. We can think of the game as a black box.
@@ -22,8 +23,14 @@ from constants import *
 
 def simulate(ai_inputs):
     ts = TrafficSimulation(matrix=ai_inputs, num_of_cars=10)
-    while True:        
-        ts.update_car_positions()
+    last_move_time = time.time()
+    while True:
+        current_time = time.time()
+        # move cars every move_interval seconds
+        if current_time - last_move_time >= MOVE_INTERVAL:
+            ts.update_car_positions()
+            last_move_time = current_time
+            
         if ts.done():
             result = ts.result()
             break
