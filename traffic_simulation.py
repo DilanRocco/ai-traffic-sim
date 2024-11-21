@@ -25,7 +25,7 @@ def random_intersection_placement(width: int, height: int) -> List[List[Intersec
 # Main logic for the Traffic Simulation 
 # Pygame should not be in this file
 class TrafficSimulation:
-    def __init__(self, num_of_cars, matrix: List[List[Intersection]] = random_intersection_placement(10, 10)):
+    def __init__(self, num_of_cars, matrix: List[List[Intersection]] = random_intersection_placement(15, 15)):
         self.height = len(matrix)
         self.width = len(matrix[0])
         if self.height < 2 or self.width < 2 or num_of_cars <= 0:
@@ -116,11 +116,3 @@ class TrafficSimulation:
         # print('route', c1.route)
 
         return cars
-
-
-
-
-
-
-  
-   
