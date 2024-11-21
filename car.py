@@ -6,17 +6,21 @@ from direction import Direction
 class Car:
     id = 0
     # id is the index of the car in the traffic simulation's cars list
-    def __init__(self, curr_pos: Pos, on_side: Direction, source: Pos, dest: Pos, color: Tuple[int], route: list[Direction]):
+    def __init__(self, on_side: Direction, source: Pos, dest: Pos, color: Tuple[int], route: list[Direction]):
         self.id = Car.id
-        self.curr_pos = curr_pos
+        self.curr_pos = source
         self.on_side = on_side # what side of the intersection the car is on. A car is always moving out of an intersecion
         self.color = color
         self.source = source
         self.dest = dest
         self.in_queue = False
+        self.finished = False
         self.route = route
         self.route_index = 0 # keeps track of where the car is along its route
         Car.id += 1
+        if self.at_destination():
+            self.color = 'black'
+            self.finished = True
 
     def __str__(self):
         return f"Car at {self.curr_pos}, coming from direction {self.on_side}, orginating from{self.source}, and heading to {self.dest}"

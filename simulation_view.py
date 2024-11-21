@@ -1,33 +1,14 @@
 import pygame
-import time
-import random 
-from typing import List
-from intersection import Intersection, StopLight, StopSign
+from intersection import StopLight, StopSign
 from traffic_simulation import TrafficSimulation
 from constants import *
-   
- # TODO move to run.py (in here for testing purposes)       
-def random_intersection_placement(width: int, height: int) -> List[List[Intersection]]:
-    matrix = [[None for i in range(width)] for i in range(height)]
-    print(matrix, 'matrix creation')
-    for y in range(height):
-        for x in range(width):
-            if y == 0 or x == 0:
-                continue
-            random_intersection = random.randint(0, 1)
-            if random_intersection == 1:
-                matrix[y][x] = StopLight()
-            else:
-                matrix[y][x] = StopSign()
-    return matrix 
        
 # Represents all information to rendering the game
 class GameLoop:
     def __init__(self):
-        self.traffic_simulation = TrafficSimulation(matrix=random_intersection_placement(9, 9), stop_light_duration=1.5)
+        self.traffic_simulation = TrafficSimulation(num_of_cars=30)
         self.screen_height = CELL_SIZE * self.traffic_simulation.height
         self.screen_width = CELL_SIZE * self.traffic_simulation.width
-        self.car_index = 0
 
     def drawGrid(self, screen):
         for y in range(0, self.screen_height, CELL_SIZE):
@@ -52,8 +33,8 @@ class GameLoop:
                                                   (CAR_SIZE/4))
 
     def draw_intersection_elements(self, screen):
-        for y in range(0, len(self.traffic_simulation.matrix)):
-            for x in range(0, len(self.traffic_simulation.matrix[0])):
+        for y in range(1, self.traffic_simulation.height):
+            for x in range(1, self.traffic_simulation.width):
                 intersection = self.traffic_simulation.matrix[y][x]
                 if type(intersection) == StopLight:
                     pygame.draw.circle(screen, GREEN if not intersection.y_axis_green else RED, ((x*CELL_SIZE) - 8,(y * CELL_SIZE)), 5)
@@ -82,22 +63,18 @@ class GameLoop:
     
     def loop_gui(self):
         pygame.init()
-        screen = pygame.display.set_mode((self.screen_height, self.screen_width))
+        screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         pygame.display.set_caption("Traffic Simulation")
         self.refresh(screen)
-
-        last_move_time = time.time()
 
         while True:
             pygame.display.flip()
             self.refresh(screen)
-            current_time = time.time()
-            # move cars every move_interval seconds
-            if current_time - last_move_time >= MOVE_INTERVAL:
-                self.traffic_simulation.update_car_positions()
-                last_move_time = current_time
+            
+            self.traffic_simulation.update_car_positions()
             
             if self.traffic_simulation.done():
+                self.refresh(screen)
                 result = self.traffic_simulation.result()
                 pygame.display.flip()
                 break
@@ -105,7 +82,7 @@ class GameLoop:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     break
-            
+        
         print(f"average time to destination: {result} seconds")
         pygame.quit()
 

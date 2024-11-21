@@ -1,4 +1,5 @@
-MOVE_INTERVAL = 1.0 # cars move every MOVE_INTERVAL seconds
+LIGHT_RELEASE_RATE = 1 # when the light is green, cars go through it every LIGHT_RELEASE_RATE seconds
+STOP_SIGN_RELEASE_RATE = 2 # every STOP_SIGN_RELEASE_RATE seconds, a car is released from the stop sign
 
 CELL_SIZE = 75 # pixels
 CAR_SIZE = 20
