@@ -96,9 +96,10 @@ def uniform_crossover(candidate1: List[List[Intersection]], candidate2: List[Lis
     return new_candidate
 
 def crossover(candidate1: List[List[Intersection]], candidate2: List[List[Intersection]]):
-    if random.random() < 0.33:
+    rand = random.random() 
+    if rand < 0.33:
         return checkerboard_crossover(candidate1, candidate2)
-    elif random.random() < 0.66:
+    elif rand < 0.66:
         return alternating_row_crossover(candidate1, candidate2)
     else:
         return uniform_crossover(candidate1, candidate2)
@@ -184,7 +185,7 @@ def genetic_algorithm():
     return best_overall
 
 def draw_solution(solution: List[List[Intersection]]):
-    view = SimulationView(TrafficSimulation(matrix=solution, num_of_cars=200), draw_cars=False)
+    view = SimulationView(TrafficSimulation(matrix=solution, num_of_cars=75), draw_cars=True)
     view.start()
 
 if __name__ == '__main__':
