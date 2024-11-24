@@ -185,7 +185,7 @@ def genetic_algorithm():
     return best_overall
 
 def draw_solution(solution: List[List[Intersection]]):
-    view = SimulationView(TrafficSimulation(matrix=solution, num_of_cars=75), draw_cars=True)
+    view = SimulationView(TrafficSimulation(matrix=solution, num_of_cars=200), draw_cars=False)
     view.start()
 
 if __name__ == '__main__':
