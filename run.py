@@ -29,7 +29,7 @@ SURVIVOR_COUNT = POPULATION_SIZE // 2 # the top half of candidates are preserved
 RUNS_PER_CANDIDATE = 5
 
 MUTATION_RATE_INITIAL = 0.9
-MUTATION_DECAY_RATE = 0.95
+MUTATION_DECAY_RATE = 0.9
 
 CONVERGENCE_THRESHOLD = 6 # number of generations without improvement in order to declare a local optimum
 
@@ -38,7 +38,7 @@ NUM_RESTARTS = 3
 def stop_all_threads():
     for thread in threading.enumerate():
         if thread != threading.current_thread():
-            thread.join()    
+            thread.join()
 
 def run_simulations_on(candidate: List[List[Intersection]]):
     results = []
@@ -86,11 +86,22 @@ def checkerboard_crossover(candidate1: List[List[Intersection]], candidate2: Lis
                 new_candidate[y].append(candidate2[y][x])
     return new_candidate
 
+def uniform_crossover(candidate1: List[List[Intersection]], candidate2: List[List[Intersection]]):
+    # builds a new candidate by randomly alternating between either parent cell by cell
+    new_candidate = []
+    for y in range(len(candidate1)):
+        new_candidate.append([])
+        for x in range(len(candidate1[0])):
+            new_candidate[y].append(candidate1[y][x] if random.random() < 0.5 else candidate2[y][x])
+    return new_candidate
+
 def crossover(candidate1: List[List[Intersection]], candidate2: List[List[Intersection]]):
-    if random.random() < 0.5:
+    if random.random() < 0.33:
         return checkerboard_crossover(candidate1, candidate2)
-    else:
+    elif random.random() < 0.66:
         return alternating_row_crossover(candidate1, candidate2)
+    else:
+        return uniform_crossover(candidate1, candidate2)
 
 def mutate(candidate: List[List[Intersection]]):
     mutated_candidate = candidate.copy()
