@@ -1,5 +1,5 @@
 # tweak this to change the simulation speed
-SCALE_FACTOR = .4
+SCALE_FACTOR = .1
 
 LIGHT_RELEASE_RATE = .9*SCALE_FACTOR # when the light turns green, cars that were in queue go through it every LIGHT_RELEASE_RATE seconds
 STOP_SIGN_RELEASE_RATE = 2*SCALE_FACTOR # every STOP_SIGN_RELEASE_RATE seconds, a car is released from the stop sign
